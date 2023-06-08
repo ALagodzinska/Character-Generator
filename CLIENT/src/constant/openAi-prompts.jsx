@@ -8,7 +8,7 @@ export const characterInformationPrompt = (
   characterDescription
 ) => `Act as if you are creating new character for the game.
 
-Generate all the information below using this description as a start point - ${characterBaseData} ${characterDescription}. Write response as html <h1>, <h2>,<p> and <li> elements. Put name and physical characteristics in one <div>, and everything else in another <div>. In total would be two <div> elements.
+Generate all the information below using this description as a start point - ${characterBaseData} ${characterDescription}. Put response in html <h1>, <h2>,<p> and <li> elements. Put name and physical characteristics in one <div>, and everything else in another <div>. In total would be two <div> elements.
 
 Show result as
 

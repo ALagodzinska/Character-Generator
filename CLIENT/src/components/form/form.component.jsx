@@ -3,7 +3,9 @@ import SelectInput from "../select-input/select-input.component";
 
 import * as options from "../../constant/select-options.jsx";
 
-const Form = ({ onChange, onSubmit }) => {
+import "./form.styles.scss";
+
+const Form = ({ onChange, onSubmit, isBtnDisabled }) => {
   return (
     <form className="generate-form">
       <Stack direction="row" spacing={6} className="form-boxes">
@@ -31,7 +33,7 @@ const Form = ({ onChange, onSubmit }) => {
             label: "Race",
           }}
         />
-        <Button variant="outlined" onClick={onSubmit}>
+        <Button variant="outlined" onClick={onSubmit} disabled={isBtnDisabled}>
           <span>Generate</span>
         </Button>
       </Stack>
