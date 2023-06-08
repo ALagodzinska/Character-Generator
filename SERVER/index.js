@@ -2,8 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 
-import postRoutes from "./routes/postRoutes.js";
-import dalleRoutes from "./routes/dalleRoutes.js";
+import openaiRoutes from "./routes/openaiRoutes.js";
 
 // allows to pull a zero-dependency module that loads environment variables from a .env file into process.env
 dotenv.config();
@@ -13,10 +12,8 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 
 // added routes
-// get post
-app.use("/api/v1/post", postRoutes);
 // generate data from api
-app.use("/api/v1/dalle", dalleRoutes);
+app.use("/api/v1/openai", openaiRoutes);
 
 // route to verify the app is working
 app.get("/", async (req, res) => {

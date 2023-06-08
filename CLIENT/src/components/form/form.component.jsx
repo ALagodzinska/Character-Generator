@@ -6,7 +6,7 @@ import * as options from "../../constant/select-options.jsx";
 const Form = ({ onChange, onSubmit }) => {
   return (
     <form className="generate-form">
-      <Stack direction="row" spacing={6}>
+      <Stack direction="row" spacing={6} className="form-boxes">
         <SelectInput
           options={options.sexOptions}
           selectProps={{

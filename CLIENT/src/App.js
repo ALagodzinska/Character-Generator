@@ -4,8 +4,9 @@ import { Route, Routes } from "react-router-dom";
 
 import "./App.scss";
 import Picture from "./components/picture/picture.component";
-import { generateImage } from "./utils/openAiPost.js";
+import { generateImage, generateText } from "./utils/openAiPost.js";
 import preview from "./assets/preview.png";
+import * as prompts from "./constant/openAi-prompts.jsx";
 
 const defaultFormFields = {
   sex: "Male",
@@ -16,6 +17,7 @@ const defaultFormFields = {
 
 function App() {
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [infoField, setInfoField] = useState(null);
 
   const onSelectChange = (event) => {
     const { name, value } = event.target;
@@ -27,13 +29,26 @@ function App() {
     event.preventDefault();
     try {
       console.log("Submit");
-      const prompt = `Fantasy art Genshin Impact game style ${formFields.sex} ${formFields.race} ${formFields.age}.`;
+      const prompt = `${formFields.sex} ${formFields.race} ${formFields.age}.`;
       console.log(prompt);
-      const data = await generateImage(prompt);
+      // generate description
+      const imgDescription = await generateText(
+        prompts.characterDescription(prompt)
+      );
+      // generate image based on description
+      const img = await generateImage(prompts.picturePrompt(imgDescription));
+      // generate all information about character
+      const characterData = await generateText(
+        prompts.characterInformationPrompt(prompt, imgDescription)
+      );
+
+      setInfoField(characterData);
+
+      console.log(characterData);
 
       setFormFields({
         ...formFields,
-        photo: `data:image/jpeg;base64,${data.photo}`,
+        photo: `data:image/jpeg;base64,${img.photo}`,
       });
 
       console.log("Here!");
@@ -59,6 +74,10 @@ function App() {
             <Form onChange={onSelectChange} onSubmit={onFormSubmit} />
             <div className="result">
               <Picture src={formFields.photo} />
+              <div
+                className="content"
+                dangerouslySetInnerHTML={{ __html: infoField ? infoField : "" }}
+              ></div>
             </div>
           </div>
         }

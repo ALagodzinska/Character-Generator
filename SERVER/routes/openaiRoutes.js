@@ -16,7 +16,8 @@ router.route("/").get((req, res) => {
   res.send("Hello from DALL-E!");
 });
 
-router.route("/").post(async (req, res) => {
+// get the image
+router.route("/dalle").post(async (req, res) => {
   try {
     const { prompt } = req.body;
 
@@ -33,6 +34,24 @@ router.route("/").post(async (req, res) => {
 
     // sending image back to frontend
     res.status(200).json({ photo: image });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err?.response.data.error.message);
+  }
+});
+
+// get text data
+router.route("/chatgpt").post(async (req, res) => {
+  try {
+    const { prompt } = req.body;
+
+    // generate image
+    const aiResponse = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt,
+      max_tokens: 2048,
+    });
+    res.status(200).json(aiResponse.data.choices[0].text);
   } catch (err) {
     console.log(err);
     res.status(500).send(err?.response.data.error.message);
